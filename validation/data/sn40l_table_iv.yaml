@@ -1,0 +1,40 @@
+# Published SN40L decode results used to validate chiplens.
+# Source: Prabhakar et al., MICRO 2024, Table IV ("Output tokens per second per
+# user", measured on 16 SN40L sockets, all variations use BF16 weights).
+# https://arxiv.org/abs/2405.07518
+#
+# Caveats stated by the paper or not stated at all:
+# - Batch size for this table is NOT stated.
+# - The 70B and 405B runs use speculative decoding (Section VI-B), which produces
+#   more than one token per read of the weights.
+# - The HTML text of the table repeated each digit run ("129129"). The values
+#   below were read as 129, 457, 1042. Check them against the rendered paper.
+
+name: SN40L Table IV decode results
+chip: sn40l
+sockets: 16
+precision: bf16
+batch: 1
+context_tokens: 0
+specs:
+  llama31_8b:
+    value: 1042.0
+    unit: tokens/s/user
+    source_url: https://arxiv.org/abs/2405.07518
+    as_of: "2026-11-18"
+    confidence: published
+    note: "Table IV. Display name: Llama 3.1 8B. Speculative decoding not stated for 8B."
+  llama3_70b:
+    value: 457.0
+    unit: tokens/s/user
+    source_url: https://arxiv.org/abs/2405.07518
+    as_of: "2026-11-18"
+    confidence: published
+    note: "Table IV, Llama 3.1 Instruct 70B. Uses speculative decoding. Model file is Llama 3 70B, which has the same dimensions."
+  llama31_405b:
+    value: 129.0
+    unit: tokens/s/user
+    source_url: https://arxiv.org/abs/2405.07518
+    as_of: "2026-11-18"
+    confidence: published
+    note: "Table IV, Llama 3.1 Instruct 405B. Uses speculative decoding."
