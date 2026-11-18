@@ -1,0 +1,44 @@
+# Google Cloud TPU v5e, one chip.
+# Source: Google Cloud TPU v5e documentation, system architecture table.
+# https://docs.cloud.google.com/tpu/docs/v5e
+# The page says the Cloud TPU v5e API is no longer under active development.
+# Google publishes no chip power, so board_power is a placeholder tagged assumed.
+# HBM is listed in GiB; converted to GB (1 GiB = 1.073741824 GB) and tagged estimated.
+
+name: Google TPU v5e
+specs:
+  peak_compute_bf16:
+    value: 197.0
+    unit: TFLOPS
+    source_url: https://docs.cloud.google.com/tpu/docs/v5e
+    as_of: "2026-11-18"
+    confidence: published
+    note: "Table row: Peak compute per chip (bf16) 197 TFLOPs."
+  peak_compute_int8:
+    value: 393.0
+    unit: TFLOPS
+    source_url: https://docs.cloud.google.com/tpu/docs/v5e
+    as_of: "2026-11-18"
+    confidence: published
+    note: "Table row: Peak compute per chip (Int8) 393 TOPs, stored as TFLOPS-equivalent."
+  memory_capacity:
+    value: 17.2
+    unit: GB
+    source_url: https://docs.cloud.google.com/tpu/docs/v5e
+    as_of: "2026-11-18"
+    confidence: estimated
+    note: "Page says 16 GiB. 16 GiB = 17.18 GB."
+  memory_bandwidth:
+    value: 819.0
+    unit: GB/s
+    source_url: https://docs.cloud.google.com/tpu/docs/v5e
+    as_of: "2026-11-18"
+    confidence: published
+    note: "Table row: HBM bandwidth per chip 819 GBps."
+  board_power:
+    value: 200.0
+    unit: W
+    source_url: null
+    as_of: "2026-11-18"
+    confidence: assumed
+    note: "PLACEHOLDER. Google does not publish chip power on the pages read."

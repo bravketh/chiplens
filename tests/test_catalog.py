@@ -19,7 +19,10 @@ def test_every_shipped_data_file_loads_and_validates(kind: str) -> None:
 
 
 def test_expected_chips_and_models_present() -> None:
-    assert {"sn40l", "h100_sxm", "example_chip"} <= set(list_ids("chips"))
+    assert {"sn40l", "h100_sxm", "h200_sxm", "gaudi3", "tpu_v5p", "tpu_v5e"} <= set(
+        list_ids("chips")
+    )
+    assert "example_chip" in list_ids("chips")
     assert {"llama3_70b", "llama31_405b", "llama31_8b"} <= set(list_ids("models"))
 
 

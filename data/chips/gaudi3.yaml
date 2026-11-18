@@ -1,0 +1,53 @@
+# Intel Gaudi 3 AI accelerator (OAM mezzanine card, HL-325L).
+# Sources: Intel Gaudi 3 AI Accelerator White Paper (Japanese edition), specification
+# comparison table and text, and the HL-325L OAM product brief.
+# https://cdrdv2-public.intel.com/817486/gaudi-3-ai-accelerator-white-paper-jp.pdf
+# https://cdrdv2-public.intel.com/817487/gaudi-3-ai-accelerator-hl-325l-oam-mezzanine-card-product-brief-jp.pdf
+# The English pages on intel.com do not state these numbers; the values were read from
+# the PDFs' text layer. Verify them against the English edition when possible.
+# Compute figures are the matrix-engine (MME) peaks from the table.
+
+name: Intel Gaudi 3 (OAM)
+specs:
+  peak_compute_bf16:
+    value: 1678.0
+    unit: TFLOPS
+    source_url: https://cdrdv2-public.intel.com/817486/gaudi-3-ai-accelerator-white-paper-jp.pdf
+    as_of: "2026-11-18"
+    confidence: published
+    note: "Table row: BF16 MME TFLOPS, Gaudi 3 column 1,678. Text elsewhere says 1.8 PFlops."
+  peak_compute_fp8:
+    value: 1678.0
+    unit: TFLOPS
+    source_url: https://cdrdv2-public.intel.com/817486/gaudi-3-ai-accelerator-white-paper-jp.pdf
+    as_of: "2026-11-18"
+    confidence: published
+    note: "Table row: FP8 MME TFLOPS, Gaudi 3 column 1,678."
+  memory_capacity:
+    value: 128.0
+    unit: GB
+    source_url: https://cdrdv2-public.intel.com/817486/gaudi-3-ai-accelerator-white-paper-jp.pdf
+    as_of: "2026-11-18"
+    confidence: published
+    note: "HBM2e, eight stacks, 128 GB."
+  memory_bandwidth:
+    value: 3.7
+    unit: TB/s
+    source_url: https://cdrdv2-public.intel.com/817486/gaudi-3-ai-accelerator-white-paper-jp.pdf
+    as_of: "2026-11-18"
+    confidence: published
+    note: "Table row: HBM bandwidth 3.7 TB/s."
+  sram_capacity:
+    value: 96.0
+    unit: MB
+    source_url: https://cdrdv2-public.intel.com/817486/gaudi-3-ai-accelerator-white-paper-jp.pdf
+    as_of: "2026-11-18"
+    confidence: published
+    note: "Table row: SRAM capacity 96 MB (read 12.8 TB/s, write 6.4 TB/s). Not used as a weight tier."
+  board_power:
+    value: 900.0
+    unit: W
+    source_url: https://cdrdv2-public.intel.com/817487/gaudi-3-ai-accelerator-hl-325l-oam-mezzanine-card-product-brief-jp.pdf
+    as_of: "2026-11-18"
+    confidence: published
+    note: "TDP up to 900 W for the OAM card, passive or liquid cooled."

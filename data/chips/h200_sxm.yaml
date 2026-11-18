@@ -1,0 +1,42 @@
+# NVIDIA H200 SXM.
+# Source: NVIDIA H200 product page, Specifications table (H200 SXM column).
+# https://www.nvidia.com/en-us/data-center/h200/
+# The page marks these as preliminary specifications that may change. Tensor Core
+# TFLOPS are listed "with sparsity"; dense is assumed to be half (estimated).
+
+name: NVIDIA H200 SXM
+specs:
+  peak_compute_bf16:
+    value: 989.5
+    unit: TFLOPS
+    source_url: https://www.nvidia.com/en-us/data-center/h200/
+    as_of: "2026-11-18"
+    confidence: estimated
+    note: "Page lists 1,979 TFLOPS with sparsity. Dense assumed to be half."
+  peak_compute_fp8:
+    value: 1979.0
+    unit: TFLOPS
+    source_url: https://www.nvidia.com/en-us/data-center/h200/
+    as_of: "2026-11-18"
+    confidence: estimated
+    note: "Page lists 3,958 TFLOPS with sparsity. Dense assumed to be half."
+  memory_capacity:
+    value: 141.0
+    unit: GB
+    source_url: https://www.nvidia.com/en-us/data-center/h200/
+    as_of: "2026-11-18"
+    confidence: published
+    note: "HBM3e. Page marks specs as preliminary."
+  memory_bandwidth:
+    value: 4.8
+    unit: TB/s
+    source_url: https://www.nvidia.com/en-us/data-center/h200/
+    as_of: "2026-11-18"
+    confidence: published
+  board_power:
+    value: 700.0
+    unit: W
+    source_url: https://www.nvidia.com/en-us/data-center/h200/
+    as_of: "2026-11-18"
+    confidence: published
+    note: "Page says up to 700 W, configurable."
