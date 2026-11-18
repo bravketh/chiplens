@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "chiplens"
-version = "1.3.0"
+version = "1.4.0"
 description = "Open-source tradeoff and cost model for AI inference chips, built on cited public specs."
 readme = "README.md"
 requires-python = ">=3.11"

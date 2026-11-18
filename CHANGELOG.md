@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-11-18
+
+- App redesign: dark console theme, hero banner, context strip, compute-use gauge in the
+  verdict, segmented navigation, custom fonts. Streamlit chrome hidden.
+
 ## [1.3.0] - 2026-11-18
 
 - Lever costs (`lever_costs.py`, `data/assumptions/lever_costs.yaml`): prices each

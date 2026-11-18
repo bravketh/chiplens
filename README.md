@@ -1,10 +1,9 @@
 # chiplens
 
-[![CI](https://github.com/OWNER/chiplens/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/chiplens/actions/workflows/ci.yml)
+[![CI](https://github.com/bravketh/chiplens/actions/workflows/ci.yml/badge.svg)](https://github.com/bravketh/chiplens/actions/workflows/ci.yml)
 ![python](https://img.shields.io/badge/python-3.11%2B-blue)
 ![license](https://img.shields.io/badge/license-MIT-green)
 
-<!-- Replace OWNER with your GitHub username once the repo is public. -->
 
 An open-source tool for AI inference chip product managers: check a customer
 requirement, see what limits a chip and which upgrade helps, and sanity-check a
