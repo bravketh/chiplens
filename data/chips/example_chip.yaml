@@ -1,0 +1,35 @@
+# PLACEHOLDER CHIP. Every number below is "assumed" and does not describe any
+# real product. It exists to show the schema and to feed the M1 tests.
+# Real chips go in their own files, with source_url and a published or
+# estimated tag.
+#
+# Each field: value, unit, source_url, as_of, confidence.
+#   confidence: published | estimated | assumed
+#   source_url may be null only when confidence is "assumed".
+
+name: Example Chip (placeholder)
+specs:
+  memory_bandwidth:
+    value: 3.0
+    unit: TB/s
+    source_url: null
+    as_of: "2026-11-18"
+    confidence: assumed
+  peak_compute_int8:
+    value: 638.0
+    unit: TFLOPS
+    source_url: null
+    as_of: "2026-11-18"
+    confidence: assumed
+  memory_capacity:
+    value: 192.0
+    unit: GB
+    source_url: null
+    as_of: "2026-11-18"
+    confidence: assumed
+  board_power:
+    value: 700.0
+    unit: W
+    source_url: null
+    as_of: "2026-11-18"
+    confidence: assumed
