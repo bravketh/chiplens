@@ -136,3 +136,12 @@ edition when possible.
 TPU power is not published on the pages read. The scenario layer requires a power value,
 so each TPU has a placeholder tagged `assumed`, which the app already surfaces. Making
 power optional would be cleaner and is a possible follow-up.
+
+## D23: Lever costs are linear and entirely assumed (v1.3)
+
+No public source exists for what adding bandwidth, compute or capacity costs a vendor,
+so the three unit costs (USD per chip for +100% of a lever) are placeholders tagged
+`assumed`. Cost is linear in the multiplier, the simplest honest model. The cheapest
+lever depends on these inputs, so the app labels the result as assumed and points to
+the file to edit. Real cost curves are not linear (HBM stacks come in steps), which is
+a known limitation.

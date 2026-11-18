@@ -17,6 +17,7 @@ from chiplens.audit import audit_per_user_claim, audit_total_claim
 from chiplens.brief import scenario_brief
 from chiplens.catalog import has_spec, list_ids, load, spec_value
 from chiplens.insight import diagnose
+from chiplens.lever_costs import cheapest_lever, lever_costs, unit_costs_from
 from chiplens.requirements import LEVERS, meets_target, required_multipliers
 from chiplens.scenario import PRECISION_BYTES, analyze, with_multipliers
 from chiplens.validation import VALIDATION_DIR, load_validation, run_validation
@@ -456,6 +457,27 @@ if view == NAV[1]:
         else:
             shown = f"{value:.2f}x"
         col.metric(labels[lever], shown)
+    unit_costs = unit_costs_from(load("assumptions", "lever_costs"))
+    costs = lever_costs(need, unit_costs)
+    if any(v for v in costs.values() if v):
+        st.caption(
+            "Extra cost per chip (ASSUMED unit costs, linear in the multiplier): "
+            + ", ".join(
+                f"{labels[k].lower()} "
+                + ("n/a" if v is None else f"${v:,.0f}")
+                for k, v in costs.items()
+            )
+        )
+        cheap = cheapest_lever(need, unit_costs)
+        if cheap:
+            st.markdown(
+                f'<div class="pick">Cheapest fix under these assumptions: '
+                f"<b>{labels[cheap[0]].lower()}</b> at about ${cheap[1]:,.0f} per "
+                "chip. The ranking depends on the assumed unit costs in "
+                "data/assumptions/lever_costs.yaml, so replace them with your own."
+                "</div>",
+                unsafe_allow_html=True,
+            )
     viable = {k: v for k, v in need.items() if v is not None and v > 1.0}
     if all(v == 1.0 for v in need.values()):
         st.markdown(

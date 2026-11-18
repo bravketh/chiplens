@@ -96,6 +96,16 @@ def test_requirements_view_reports_a_miss_and_the_lever() -> None:
     assert shown["Compute"] == "Will not help"
 
 
+def test_requirements_view_prices_the_cheapest_fix() -> None:
+    at = AppTest.from_file(str(APP), default_timeout=30)
+    at.session_state["view"] = "Requirements"
+    at.session_state["target"] = 95.0
+    at.run()
+    assert not at.exception
+    assert any("ASSUMED unit costs" in c.value for c in at.caption)
+    assert any("Cheapest fix" in m.value for m in at.markdown)
+
+
 def test_requirements_view_reports_a_pass() -> None:
     at = AppTest.from_file(str(APP), default_timeout=30)
     at.session_state["view"] = "Requirements"

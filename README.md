@@ -93,7 +93,8 @@ $ chiplens run --chip sn40l --model llama31_405b --precision bf16 --sockets 16
 | `fusion` | activation traffic and launch overhead | wide MLP intermediates, prefill |
 | `economics` | COGS, TCO, cost per token, payback, Monte Carlo | financing, demand, price decline |
 | `audit` | bandwidth and compute bounds on claims, calibration | everything outside those bounds |
-| `requirements` | smallest lever multiplier that meets a target | levers combined, cost of the lever |
+| `requirements` | smallest lever multiplier that meets a target | levers combined |
+| `lever_costs` | assumed cost per lever, cheapest fix | real vendor costs |
 | `brief` | shareable one-page summary | |
 
 Multi-chip results assume **ideal scaling with no network cost**. Cost inputs are

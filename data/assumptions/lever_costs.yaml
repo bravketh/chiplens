@@ -1,0 +1,30 @@
+# Relative cost of improving each chip lever. EVERY value is assumed: no public
+# source exists for what a vendor pays to add bandwidth, compute or capacity.
+# Each number is the extra cost per chip (USD) of raising that lever by +100%
+# (2x), and cost is treated as linear in the multiplier. Replace with real
+# numbers from your own cost model. Results show how the tool ranks options, not
+# what any vendor pays.
+
+name: Example lever costs (all assumed)
+specs:
+  bandwidth_cost_per_100pct:
+    value: 1500.0
+    unit: USD
+    source_url: null
+    as_of: "2026-11-18"
+    confidence: assumed
+    note: "Extra HBM stacks plus packaging; placeholder."
+  compute_cost_per_100pct:
+    value: 800.0
+    unit: USD
+    source_url: null
+    as_of: "2026-11-18"
+    confidence: assumed
+    note: "Larger or denser die; placeholder."
+  capacity_cost_per_100pct:
+    value: 1000.0
+    unit: USD
+    source_url: null
+    as_of: "2026-11-18"
+    confidence: assumed
+    note: "Taller or more memory stacks; placeholder."

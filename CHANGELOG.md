@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-11-18
+
+- Lever costs (`lever_costs.py`, `data/assumptions/lever_costs.yaml`): prices each
+  required lever multiplier with assumed per-chip unit costs (linear in the
+  multiplier) and names the cheapest fix. The Requirements view shows it. All unit
+  costs are tagged `assumed`; the ranking is the output, not the dollars.
+
 ## [1.2.0] - 2026-11-18
 
 Product-manager workflow.
