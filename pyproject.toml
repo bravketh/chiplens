@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "chiplens"
-version = "1.0.0"
+version = "1.2.0"
 description = "Open-source tradeoff and cost model for AI inference chips, built on cited public specs."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -34,3 +34,7 @@ src = ["src", "tests"]
 [tool.ruff.lint]
 # E/F: pycodestyle and pyflakes, I: import order, B: likely bugs, UP: modern syntax
 select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+# UI copy and chart specs read better on long lines.
+"app/*" = ["E501"]

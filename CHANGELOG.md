@@ -2,6 +2,37 @@
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-11-18
+
+Product-manager workflow.
+
+- Requirements check (`requirements.py`): a customer target in tokens/s per user passes
+  or fails, with the smallest bandwidth, compute or capacity multiplier that closes the
+  gap, and "will not help" for levers that cannot. Compares all chips against the target.
+- Speculative decoding (`tokens_per_read`) and calibration (`efficiency`,
+  `audit.calibration_factor`) in `scenario.analyze`.
+- Claim triage in the app: published-claims library, implied tokens per weight read,
+  one-click apply, and calibration from a measured result.
+- One-page Markdown brief (`brief.py`) with a download button.
+- Data: NVIDIA H200 SXM, Google TPU v5p and v5e (Google Cloud docs), Intel Gaudi 3
+  (Intel white paper and product brief PDFs). TPU power is an assumed placeholder.
+  Not added because no citable specs could be read: AMD MI300X, NVIDIA B200, Groq,
+  Cerebras WSE-3.
+- Includes the 1.1.0 changes below (released together).
+
+## [1.1.0] - 2026-11-18 (shipped in the v1.2.0 tag)
+
+Guided web app and what-if analysis.
+
+- App: opens with a plain-English verdict (memory-, compute- or capacity-bound),
+  a roofline with your operating point, step-time and memory-fit pictures, a batching
+  explorer, an "Upgrades" view comparing 2x bandwidth, compute and capacity, a chip
+  comparison, a claim checker with a SambaNova demo, cost, validation and a Learn view.
+  Preset stories (chat, API server, long documents). Persistent navigation.
+- `insight.diagnose`: tested verdict engine. `scenario.with_multipliers`: what-if chips
+  (scaled specs are relabelled assumed). More fields on `scenario.Result`.
+- Docs: `docs/LEARNING_GUIDE.md`.
+
 ## [1.0.0] - 2026-11-18
 
 First complete release.
