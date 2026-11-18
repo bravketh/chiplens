@@ -39,3 +39,14 @@ you asked for the answers instead of attempting them (third time).
   after M1: answer first, even if unsure.
 
 **Quiz after M1:** pending.
+
+## After M1: switched to full build
+
+You asked me to build M2 to M8 in one go and walk you through it. The M1 quiz and the
+M2 to M8 gating were skipped at your request. Open items to revisit, in order:
+
+1. Answer the M1 quiz questions yourself (flat vs falling per-user speed, 16-bit at
+   6 TB/s, KV cache effect on balanced batch).
+2. Predict before looking: for each milestone, guess the direction of a change before
+   running it.
+3. Walkthrough topics: roofline, KV cache, tiers, yield, fusion, TCO, validation.

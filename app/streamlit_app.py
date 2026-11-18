@@ -6,6 +6,7 @@ All modeling lives in src/chiplens. This file only reads inputs and draws result
 
 from __future__ import annotations
 
+import altair as alt
 import pandas as pd
 import streamlit as st
 
@@ -69,8 +70,12 @@ except (ValueError, KeyError) as exc:
     st.stop()
 
 col1, col2, col3, col4 = st.columns(4)
-col1.metric("Speed per user", f"{result.per_user_tokens_per_s:.1f} tokens/s")
-col2.metric("System throughput", f"{result.system_tokens_per_s:,.0f} tokens/s")
+col1.metric("Speed per user", f"{result.per_user_tokens_per_s:.1f}", help="tokens/s")
+col2.metric(
+    "System throughput",
+    f"{result.system_tokens_per_s:,.0f}",
+    help="tokens/s, all users",
+)
 col3.metric("Compute utilization", f"{result.compute_utilization:.1%}")
 col4.metric("Tokens per joule", f"{result.tokens_per_joule:.3f}")
 
@@ -120,10 +125,24 @@ for b in (2**i for i in range(0, 12)):
     )
 sweep = pd.DataFrame(rows).set_index("batch")
 left, right = st.columns(2)
-left.subheader("Speed each user sees")
-left.line_chart(sweep["per-user tokens/s"])
-right.subheader("Total throughput")
-right.line_chart(sweep["system tokens/s"])
+
+
+def log_chart(column: str) -> alt.Chart:
+    """Line chart with log axes, so small batches and big ones are both readable."""
+    return (
+        alt.Chart(sweep.reset_index())
+        .mark_line(point=True)
+        .encode(
+            x=alt.X("batch:Q", scale=alt.Scale(type="log", base=2)),
+            y=alt.Y(f"{column}:Q", scale=alt.Scale(type="log")),
+        )
+    )
+
+
+left.subheader("Speed each user sees (tokens/s, log-log)")
+left.altair_chart(log_chart("per-user tokens/s"), use_container_width=True)
+right.subheader("Total throughput (tokens/s, log-log)")
+right.altair_chart(log_chart("system tokens/s"), use_container_width=True)
 
 st.subheader("Inputs used")
 st.dataframe(
@@ -132,3 +151,63 @@ st.dataframe(
     ),
     hide_index=True,
 )
+
+st.divider()
+with st.expander("Economics (every cost input is assumed)"):
+    from chiplens.report import economics_report
+
+    die_area = st.number_input("Die area per chip (mm^2, your input)", 50, 1600, 800)
+    n_dies = st.number_input("Chiplets per chip", 1, 8, 1)
+    overhead = st.slider("Die-to-die area overhead per chiplet", 0.0, 0.3, 0.1)
+    try:
+        eco = economics_report(
+            result,
+            load("assumptions", "cost_example"),
+            die_area_mm2=float(die_area),
+            n_dies=int(n_dies),
+            d2d_overhead=float(overhead),
+            sockets=int(sockets),
+        )
+    except ValueError as exc:
+        st.error(str(exc))
+    else:
+        lo, mid, hi = eco["cost_per_million_tokens_p10_p50_p90"]
+        e1, e2, e3 = st.columns(3)
+        e1.metric("Silicon cost per chip", f"${eco['silicon_cost']:,.0f}")
+        e2.metric("Cost per million tokens (p50)", f"${mid:.4f}")
+        e3.metric("Payback (p50)", f"{eco['payback_months_p10_p50_p90'][1]:.1f} months")
+        st.caption(
+            f"p10 to p90 cost per million tokens: ${lo:.4f} to ${hi:.4f}. "
+            "Throughput is an upper bound, so cost per token is a floor and "
+            "payback is optimistic. Assumed inputs: " + ", ".join(eco["assumed_inputs"])
+        )
+
+with st.expander("Validation against published SN40L results"):
+    from chiplens.validation import (
+        VALIDATION_DIR,
+        load_validation,
+        run_validation,
+    )
+
+    meta = load_validation(VALIDATION_DIR / "data" / "sn40l_table_iv.yaml")
+    val_rows = run_validation(meta)
+    st.dataframe(
+        pd.DataFrame(
+            [
+                {
+                    "model": r.model_name,
+                    "published tok/s/user": r.measured,
+                    "chiplens bound": round(r.predicted, 1),
+                    "error %": round(r.error_pct, 1),
+                    "audit": r.verdict,
+                }
+                for r in val_rows
+            ]
+        ),
+        hide_index=True,
+    )
+    st.warning(
+        "chiplens does not reproduce these numbers. Two published runs beat the "
+        "bandwidth bound, which the paper attributes to speculative decoding that "
+        "this model omits. See validation/results.md."
+    )

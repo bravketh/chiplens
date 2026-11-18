@@ -45,3 +45,55 @@ switch later if the schema grows.
 **Why:** it gives the clean "balanced batch" idea first. The gaps are listed in
 docs/methodology.md and are the backlog for later milestones and validation.
 **Gave up:** realism. Results are upper bounds, not predictions.
+
+## D8: Optional per-field `note`, not validated (M3)
+
+**Chose:** a free-text `note` on any spec to record table numbers, conflicts and derivations.
+**Why:** real sources disagree with themselves (SN40L HBM bandwidth is 1.8 TB/s in a
+table and about 2 TB/s in the text). The note keeps the conflict visible next to the number.
+**Gave up:** the note is not machine checked.
+
+## D9: Dense compute for H100 is `estimated`, not `published` (M3)
+
+**Chose:** half of NVIDIA's sparse TFLOPS figure, tagged estimated.
+**Why:** the page lists numbers "with sparsity" and does not state the dense value.
+**Gave up:** certainty. Replace with a dense figure from a datasheet when one is read.
+
+## D10: Parameter count derived from architecture, tagged estimated (M3)
+
+**Chose:** 70.55B for Llama 3 70B, from the published dimensions.
+**Why:** no source read states a total. A test checks the stored value equals the formula.
+
+## D11: SRAM is not a weight tier (M3)
+
+**Chose:** weight tiers are HBM and DDR only.
+**Why:** the SN40L paper gives no exact SRAM bandwidth ("hundreds of TB/s"). Using it would
+mean inventing a number. 520 MB is negligible against tens of GB of weights anyway.
+
+## D12: Ideal multi-chip scaling (M3)
+
+**Chose:** sockets multiply capacity, bandwidth, compute and power with no network cost.
+**Why:** simplest defensible default. It is the main reason multi-chip results are optimistic.
+
+## D13: Streamlit for the web app, thin over `scenario.py` (M3)
+
+**Chose:** Streamlit, no modeling code in the app, a headless smoke test in CI.
+**Why:** deploys free, and keeps the logic testable without a browser.
+
+## D14: Every cost input is `assumed` (M7)
+
+**Chose:** a cost file where nothing is sourced, and output that says so.
+**Why:** no public, citable wafer price, defect density or margin was found. Showing a
+guess with a source would break the project's one rule.
+
+## D15: Validation reports failure as the result (M8)
+
+**Chose:** a committed report that says chiplens does not reproduce the SN40L numbers,
+with a test that fails if the report goes stale.
+**Why:** the credible claim is knowing where and why the model is wrong, not hiding it.
+
+## D16: One arithmetic slip corrected in a test (M8)
+
+The audit test first expected 2.2217 for 457 / (28800/140). The exact value is
+63980 / 28800 = 2.22153. The expected value was my arithmetic error, not a code
+issue, and was fixed with this note rather than by changing the code.
