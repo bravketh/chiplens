@@ -80,6 +80,27 @@ $ chiplens run --chip sn40l --model llama31_405b --precision bf16 --sockets 16
 
 ![Roofline demo](docs/img/m1_roofline.png)
 
+## The web app
+
+`streamlit run app/streamlit_app.py` opens a dark, guided console. The sidebar sets the
+scenario (chip, model, precision, chips, batch, context). The top shows a verdict
+(memory-, compute- or capacity-bound) with a compute-in-use gauge, then nine views:
+
+| View | Question it answers |
+| --- | --- |
+| Bottleneck | Where does each step's time go, and how close to the roofline ceiling? |
+| Requirements | Does this chip meet a customer target, and what is the cheapest fix? |
+| Batching | How do speed per user and total throughput change with users? |
+| Upgrades | What does 2x bandwidth, compute or capacity buy? |
+| Compare chips | Same scenario across every chip in `data/chips/`. |
+| Check a claim | Is a vendor's tokens/s claim physically possible? |
+| Cost | Cost per million tokens, with Monte Carlo ranges (assumed inputs). |
+| Validation | How far off is the model against published numbers? |
+| Learn | Plain-English glossary. |
+
+On a narrow window the sidebar starts collapsed. Use the pinned button in the top-left
+corner to open it.
+
 ## What is modeled, and what is not
 
 | Module | Models | Ignores |
@@ -106,7 +127,7 @@ Design choices: [docs/decisions.md](docs/decisions.md).
 data/chips/          sn40l (MICRO 2024 paper), h100_sxm, h200_sxm (NVIDIA pages),
                      tpu_v5p, tpu_v5e (Google Cloud docs), gaudi3 (Intel PDFs), example_chip (placeholder)
 data/models/         llama3_70b, llama31_405b, llama31_8b
-data/assumptions/    cost_example.yaml (every value assumed)
+data/assumptions/    cost_example.yaml, lever_costs.yaml (every value assumed)
 validation/data/     published results used for validation
 ```
 
@@ -122,13 +143,13 @@ app/            Streamlit web app (thin, no modeling code)
 data/           YAML with sources and confidence tags
 validation/     published results and the generated report
 docs/           methodology, decisions, write-up
-tests/          hand-worked expected values (190+ tests)
+tests/          hand-worked expected values (240 tests)
 examples/       chart scripts
 ```
 
 ## Status
 
-v1.2.0. See [CHANGELOG.md](CHANGELOG.md). Known gaps and ideas:
+v1.4.0. See [CHANGELOG.md](CHANGELOG.md). Known gaps and ideas:
 
 - Prefill modeled separately from decode.
 - Multi-chip network limits instead of ideal scaling.

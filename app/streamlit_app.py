@@ -488,8 +488,7 @@ if view == NAV[1]:
         st.caption(
             "Extra cost per chip (ASSUMED unit costs, linear in the multiplier): "
             + ", ".join(
-                f"{labels[k].lower()} "
-                + ("n/a" if v is None else f"${v:,.0f}")
+                f"{labels[k].lower()} " + ("n/a" if v is None else f"${v:,.0f}")
                 for k, v in costs.items()
             )
         )
