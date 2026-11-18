@@ -26,12 +26,15 @@ chiplens puts those into one transparent model:
 | Milestone | What | State |
 | --- | --- | --- |
 | M0 | Scaffold, CI, chip data schema | done |
-| M1 | Roofline and batching model | next |
-| M2 | Memory tiers | planned |
+| M1 | Roofline and batching model | done (quiz pending) |
+| M2 | Memory tiers | next |
 | M3 | Chip and model data, CLI, first web page (v0.1) | planned |
 
-Nothing is modeled yet. The only data file is a placeholder chip whose
-numbers are all `assumed`.
+Only the roofline model exists, and it is an optimistic upper bound (see
+`docs/methodology.md`). The only data file is a placeholder chip whose numbers
+are all `assumed`. Nothing is validated against a vendor result yet.
+
+![Roofline demo](docs/img/m1_roofline.png)
 
 ## Develop
 

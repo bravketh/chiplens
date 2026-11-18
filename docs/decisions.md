@@ -32,3 +32,16 @@ switch later if the schema grows.
 ## D5: Python 3.11+, CI on 3.11 and 3.12 (M0)
 
 **Why:** modern type syntax (`int | float`) and good error messages.
+
+## D6: Roofline functions take plain numbers in practical units (M1)
+
+**Chose:** GB, TB/s, TFLOPS, billions of params as arguments, not a chip object.
+**Why:** hand-checkable against a calculator, and independent of the YAML loader.
+**Gave up:** callers must pull numbers out of chip files themselves until M3.
+
+## D7: Optimistic model, limits stated up front (M1)
+
+**Chose:** ideal overlap of memory and compute, no KV cache.
+**Why:** it gives the clean "balanced batch" idea first. The gaps are listed in
+docs/methodology.md and are the backlog for later milestones and validation.
+**Gave up:** realism. Results are upper bounds, not predictions.

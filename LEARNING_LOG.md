@@ -23,3 +23,19 @@ there is nothing to grade.
   retraceable. Use `assumed` if nothing can be cited.
 - Gap (second time): skipped predicting. The M1 quiz comes first on purpose,
   so it is graded on your own answers.
+
+## M1: roofline and batching
+
+**Opening quiz** (arithmetic intensity, batch-1 idleness, doubling bandwidth):
+you asked for the answers instead of attempting them (third time).
+
+- Arithmetic intensity: ops per byte moved from memory. In decoding it is
+  2B / b, so it grows with batch size.
+- Batch 1: 70 GB must stream for 140 GFLOP of work, so compute is busy about
+  0.94% of the time.
+- Doubling bandwidth: batch-1 speed doubles (42.86 to 85.71 tokens/s), and the
+  balanced batch halves (106.33 to 53.17).
+- Gap: pattern of asking for answers before trying. Open item for the quiz
+  after M1: answer first, even if unsure.
+
+**Quiz after M1:** pending.
