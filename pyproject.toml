@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "chiplens"
-version = "0.2.0"
+version = "1.0.0"
 description = "Open-source tradeoff and cost model for AI inference chips, built on cited public specs."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -17,7 +17,7 @@ chiplens = "chiplens.cli:main"
 [project.optional-dependencies]
 dev = ["pytest>=8.0", "ruff>=0.5"]
 plot = ["matplotlib>=3.8"]
-app = ["streamlit>=1.30", "pandas>=2.0"]
+app = ["streamlit>=1.30", "pandas>=2.0", "altair>=5.0"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/chiplens"]

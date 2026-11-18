@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-18
+
+First complete release.
+
+- M8: claim auditor (bandwidth and compute bounds), validation against SN40L
+  Table IV with a generated report, `chiplens audit-user`, `audit-total`, `validate`.
+  Finding: the model does not reproduce the published numbers (errors +73%, -55%, -72%).
+- M7: economics (COGS, TCO, cost per million tokens, payback, Monte Carlo),
+  `chiplens economics`, economics and validation sections in the web app.
+- Docs: methodology with formulas, decisions log, write-up, contributing guide, MIT license.
+
 ## [0.2.0] - 2026-11-18
 
 Physical and manufacturing models.
