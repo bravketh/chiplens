@@ -15,8 +15,12 @@ html, body, [class*="css"] { font-family: 'Inter', system-ui, sans-serif; }
 }
 
 /* remove default Streamlit chrome */
-header[data-testid="stHeader"], [data-testid="stToolbar"], [data-testid="stDecoration"],
-footer, #MainMenu, .stDeployButton { display: none !important; }
+header[data-testid="stHeader"] { background: transparent !important; }
+[data-testid="stDecoration"], [data-testid="stToolbarActions"], [data-testid="stMainMenu"],
+footer, #MainMenu, .stDeployButton, [data-testid="stAppDeployButton"] { display: none !important; }
+/* keep the button that reopens the sidebar visible */
+[data-testid="stExpandSidebarButton"], [data-testid="stSidebarCollapsedControl"],
+[data-testid="collapsedControl"] { display: flex !important; color: var(--amber) !important; }
 .block-container { padding-top: 1.4rem; max-width: 1240px; }
 
 /* hero */
@@ -113,3 +117,15 @@ h2, h3 { letter-spacing: -.02em; }
 .note { font-size: .88rem; color: var(--muted); }
 .pick { padding: .8rem 1.1rem; border-radius: 12px; margin: .5rem 0;
   border: 1px solid rgba(255,138,61,.35); background: rgba(255,138,61,.09); }
+
+/* pin the sidebar toggle to the corner so it stays visible while scrolling */
+header[data-testid="stHeader"] { position: static !important; height: 0 !important; }
+[data-testid="stExpandSidebarButton"] {
+  position: fixed !important; top: 14px; left: 14px; z-index: 1000000;
+  width: 44px !important; height: 44px !important; margin: 0 !important;
+  display: flex !important; justify-content: center; align-items: center;
+  background: #1a2233 !important; color: var(--amber) !important;
+  border: 1px solid rgba(255,138,61,.6) !important; border-radius: 12px !important;
+  box-shadow: 0 6px 22px rgba(0,0,0,.55); cursor: pointer; }
+[data-testid="stExpandSidebarButton"]:hover { background: #26324a !important; }
+.block-container { padding-top: 4.2rem; }
