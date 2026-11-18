@@ -190,9 +190,18 @@ def run(c: dict, b: int = batch):
 
 
 # ------------------------------------------------------------------- hero
+_MARK = (
+    '<svg class="mark" viewBox="0 0 54 54" fill="none">'
+    '<rect x="13" y="13" width="28" height="28" rx="6" fill="#111827" '
+    'stroke="#ff8a3d" stroke-width="2.5"/>'
+    '<rect x="21" y="21" width="12" height="12" rx="2" fill="#ff8a3d"/>'
+    '<g stroke="#4c8dff" stroke-width="2.5" stroke-linecap="round">'
+    '<path d="M20 6v7M27 6v7M34 6v7M20 41v7M27 41v7M34 41v7"/>'
+    '<path d="M6 20h7M6 27h7M6 34h7M41 20h7M41 27h7M41 34h7"/></g></svg>'
+)
 st.markdown(
-    '<div class="hero"><h1>chiplens</h1>'
-    "<p>What limits this AI chip, and what would help?</p></div>",
+    f'<div class="hero">{_MARK}<div class="txt"><h1>chip<em>lens</em></h1>'
+    "<p>What limits this AI chip, and what would help?</p></div></div>",
     unsafe_allow_html=True,
 )
 
@@ -210,7 +219,23 @@ st.markdown(
     f'<div class="tag">{verdict.regime}-bound</div>'
     f"<h2>{html.escape(verdict.headline)}</h2>"
     f"<p>{html.escape(verdict.detail)}</p>"
-    f'<div class="levers"><b>What would help:</b>{levers}</div></div>',
+    f'<div class="gauge"><div class="lab"><span>COMPUTE IN USE</span>'
+    f"<span>{result.compute_utilization:.1%}</span></div>"
+    f'<div class="bar"><div class="fill" style="width:'
+    f'{max(1.0, min(100.0, result.compute_utilization * 100)):.1f}%"></div>'
+    "</div></div>"
+    f'<div class="levers"><b>What would help</b>{levers}</div></div>',
+    unsafe_allow_html=True,
+)
+
+st.markdown(
+    '<div class="strip">'
+    f"<span><b>CHIP</b>{html.escape(chip['name'])}</span>"
+    f"<span><b>MODEL</b>{html.escape(model['name'])}</span>"
+    f"<span><b>PRECISION</b>{precision}</span>"
+    f"<span><b>CHIPS</b>{sockets}</span>"
+    f"<span><b>BATCH</b>{batch}</span>"
+    f"<span><b>TRUST</b>{result.worst_confidence}</span></div>",
     unsafe_allow_html=True,
 )
 
