@@ -141,3 +141,28 @@ Validation compares the batch-1 bandwidth bound with Table IV of the SN40L paper
 and reports signed errors. Current result: errors of +73%, -55% and -72%. The
 model does not reproduce the published numbers. See
 [validation/results.md](../validation/results.md).
+
+## Speculative decoding and calibration (`scenario.py`, `audit.py`)
+
+$$t(B) = \eta \cdot \min\!\left(\frac{k}{t_{mem}},\ \frac{1}{t_{cmp}}\right)$$
+
+with $k \ge 1$ tokens per weight read and $\eta \le 1$ the efficiency. $t_{mem}$ is the
+memory time per step and $t_{cmp} = B / T_{cmp}$ the compute time per step.
+Calibration is $\eta = \dfrac{\text{measured}}{\text{predicted}}$.
+
+**Assumes:** speculative decoding is ideal: memory-limited speed scales by $k$, compute
+does not, and the compute spent on rejected draft tokens is ignored. $\eta$ is a single
+constant across batch sizes, which real systems do not obey.
+
+**Ignores:** draft-model cost, acceptance rate varying with content, and efficiency that
+changes with batch or context.
+
+## Requirements check (`requirements.py`)
+
+A target passes when speed per user is at least $T$ **and** the KV caches fit. For each
+lever (bandwidth, compute, capacity) on its own, bisection finds the smallest multiplier
+(up to 16x) that passes, or reports that no multiplier helps. Scaled specs are
+hypotheticals, relabelled `assumed`.
+
+**Ignores:** the cost of a lever (a 2x bandwidth part may cost far more than 2x compute),
+levers moving together, and any limit other than the roofline.

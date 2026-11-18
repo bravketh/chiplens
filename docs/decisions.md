@@ -97,3 +97,42 @@ with a test that fails if the report goes stale.
 The audit test first expected 2.2217 for 457 / (28800/140). The exact value is
 63980 / 28800 = 2.22153. The expected value was my arithmetic error, not a code
 issue, and was fixed with this note rather than by changing the code.
+
+## D17: Frame the project as a chip product-manager tool (v1.2)
+
+**Chose:** lead with the PM's questions: does it meet a customer requirement, which
+upgrade helps, is this competitor claim possible. Not a generic simulator.
+**Why:** a real user and a real decision make the model's limits matter in a useful way.
+
+## D18: Speculative decoding as an ideal factor (v1.2)
+
+**Chose:** a single `tokens_per_read` multiplier on the memory-limited speed.
+**Why:** it explains the largest validation misses and is easy to reason about.
+**Gave up:** draft cost and acceptance variation. It is a hypothesis, not a measurement,
+and the claim view says so.
+
+## D19: Requirements answer "will not help" explicitly (v1.2)
+
+**Chose:** a lever that cannot close the gap returns None and is shown as "Will not help".
+**Why:** telling a PM that more compute is wasted at batch 1 is the most useful output.
+
+## D20: Chips are added only from sources that were actually read (v1.2)
+
+**Chose:** add H200, TPU v5p, TPU v5e and Gaudi 3. Skip AMD MI300X (page timed out three
+times), NVIDIA B200 (only 8-GPU totals published on the pages read), Groq (no spec
+sheet found), Cerebras WSE-3 (SRAM capacity and compute precision not stated).
+**Why:** the one rule that cannot bend is never inventing a spec.
+**Gave up:** coverage of the chips a PM is most likely to ask about.
+
+## D21: Gaudi 3 values came from Japanese-language PDFs (v1.2)
+
+The English intel.com pages state no specs. The numbers were read from the text layer of
+Intel's Japanese white paper and product brief (numbers are language independent, and the
+Gaudi 2 column matched known values). Flagged in the file. Verify against the English
+edition when possible.
+
+## D22: Unpublished chip power is a flagged placeholder (v1.2)
+
+TPU power is not published on the pages read. The scenario layer requires a power value,
+so each TPU has a placeholder tagged `assumed`, which the app already surfaces. Making
+power optional would be cleaner and is a possible follow-up.

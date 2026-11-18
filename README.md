@@ -6,8 +6,9 @@
 
 <!-- Replace OWNER with your GitHub username once the repo is public. -->
 
-An open-source tradeoff and cost model for AI inference chips, built on cited
-public specs, and honest about where it is wrong.
+An open-source tool for AI inference chip product managers: check a customer
+requirement, see what limits a chip and which upgrade helps, and sanity-check a
+vendor's speed claim. Built on cited public specs, and honest about where it is wrong.
 
 ## The problem
 
@@ -28,7 +29,10 @@ chiplens puts these in one transparent model:
 - **Validation.** Predictions are compared with published results and the errors
   are shown, not hidden.
 - **Claim auditor.** Checks whether a published tokens/s claim is physically
-  possible given the chip's bandwidth or compute.
+  possible given the chip's bandwidth or compute, and what it would imply
+  (for example tokens per weight read under speculative decoding).
+- **Requirements check.** "The customer needs 50 tokens/s per user": does this chip
+  meet it, and what would close the gap (more bandwidth, compute or capacity)?
 
 ## Validation result (read this first)
 
@@ -61,7 +65,7 @@ chiplens audit-user --claim 457 --bandwidth-tb-s 28.8 --weights-gb 140
 chiplens economics --chip h100_sxm --model llama3_70b --precision fp8 --batch 2048 --die-area 800
 chiplens validate
 
-streamlit run app/streamlit_app.py     # web app
+streamlit run app/streamlit_app.py     # guided web app
 pytest                                  # tests
 ```
 
@@ -88,7 +92,9 @@ $ chiplens run --chip sn40l --model llama31_405b --precision bf16 --sockets 16
 | `diecost` | dies per wafer, Poisson/Murphy yield, chiplets | reticle limit, assembly yield |
 | `fusion` | activation traffic and launch overhead | wide MLP intermediates, prefill |
 | `economics` | COGS, TCO, cost per token, payback, Monte Carlo | financing, demand, price decline |
-| `audit` | bandwidth and compute bounds on claims | everything outside those bounds |
+| `audit` | bandwidth and compute bounds on claims, calibration | everything outside those bounds |
+| `requirements` | smallest lever multiplier that meets a target | levers combined, cost of the lever |
+| `brief` | shareable one-page summary | |
 
 Multi-chip results assume **ideal scaling with no network cost**. Cost inputs are
 **all assumed**. Full formulas and blind spots: [docs/methodology.md](docs/methodology.md).
@@ -97,14 +103,15 @@ Design choices: [docs/decisions.md](docs/decisions.md).
 ## Data
 
 ```
-data/chips/          sn40l.yaml (MICRO 2024 paper), h100_sxm.yaml (NVIDIA page), example_chip.yaml (placeholder)
+data/chips/          sn40l (MICRO 2024 paper), h100_sxm, h200_sxm (NVIDIA pages),
+                     tpu_v5p, tpu_v5e (Google Cloud docs), gaudi3 (Intel PDFs), example_chip (placeholder)
 data/models/         llama3_70b, llama31_405b, llama31_8b
 data/assumptions/    cost_example.yaml (every value assumed)
 validation/data/     published results used for validation
 ```
 
-Chip power for the SN40L is a **placeholder tagged `assumed`** because the paper
-gives none. H100 dense compute is **estimated** (half of the page's sparse figure).
+Chip power for the SN40L and the TPUs is a **placeholder tagged `assumed`** because
+the sources give none. H100 dense compute is **estimated** (half of the page's sparse figure).
 Add your own chip: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Layout
@@ -115,18 +122,20 @@ app/            Streamlit web app (thin, no modeling code)
 data/           YAML with sources and confidence tags
 validation/     published results and the generated report
 docs/           methodology, decisions, write-up
-tests/          hand-worked expected values (160+ tests)
+tests/          hand-worked expected values (190+ tests)
 examples/       chart scripts
 ```
 
 ## Status
 
-v1.0.0. See [CHANGELOG.md](CHANGELOG.md). Known gaps and ideas:
+v1.2.0. See [CHANGELOG.md](CHANGELOG.md). Known gaps and ideas:
 
 - Prefill modeled separately from decode.
 - Multi-chip network limits instead of ideal scaling.
-- Speculative decoding as a tokens-per-weight-read factor.
+- Speculative decoding beyond an ideal tokens-per-read factor (rejected-draft compute).
 - More chips as public data appears (each is a YAML file plus a validation case).
+  Not yet added, because no citable specs could be read: AMD MI300X, NVIDIA B200,
+  Groq, Cerebras WSE-3.
 - Verify the SN40L Table IV values against the paper PDF (read from HTML).
 
 ## License
