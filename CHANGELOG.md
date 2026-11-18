@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-18
+
+Physical and manufacturing models.
+
+- M6: operator-fusion model (activation traffic and kernel-launch overhead).
+- M5: die cost, wafer geometry, Poisson and Murphy yield, chiplet comparison.
+- M4: power and efficiency (energy per token, tokens per joule, rack capacity,
+  electricity cost).
+
 ## [0.1.0] - 2026-11-18
 
 First live-demo release.
