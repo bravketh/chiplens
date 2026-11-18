@@ -1,0 +1,79 @@
+# Cost and business inputs for the economics model. EVERY value is assumed:
+# no public source was found for any of them. Replace with sourced numbers
+# (and change the tag) as they become available. Results built on these inputs
+# show what the model does, not what any vendor pays.
+
+name: Example cost assumptions (all assumed)
+specs:
+  wafer_cost:
+    value: 17000.0
+    unit: USD
+    source_url: null
+    as_of: "2026-11-18"
+    confidence: assumed
+    note: "Order-of-magnitude placeholder for a leading-edge 300 mm wafer."
+  wafer_diameter:
+    value: 300.0
+    unit: mm
+    source_url: null
+    as_of: "2026-11-18"
+    confidence: assumed
+    note: "Standard wafer size."
+  defect_density:
+    value: 0.1
+    unit: defects/cm2
+    source_url: null
+    as_of: "2026-11-18"
+    confidence: assumed
+  memory_and_packaging_cost:
+    value: 4000.0
+    unit: USD
+    source_url: null
+    as_of: "2026-11-18"
+    confidence: assumed
+    note: "HBM stacks, substrate, assembly, test, per chip."
+  chip_margin_multiplier:
+    value: 2.0
+    unit: ratio
+    source_url: null
+    as_of: "2026-11-18"
+    confidence: assumed
+    note: "Selling price divided by COGS."
+  lifetime:
+    value: 4.0
+    unit: years
+    source_url: null
+    as_of: "2026-11-18"
+    confidence: assumed
+  power_price:
+    value: 0.08
+    unit: USD/kWh
+    source_url: null
+    as_of: "2026-11-18"
+    confidence: assumed
+  pue:
+    value: 1.3
+    unit: ratio
+    source_url: null
+    as_of: "2026-11-18"
+    confidence: assumed
+    note: "Datacenter overhead on top of chip power."
+  opex_fraction:
+    value: 0.1
+    unit: fraction/year
+    source_url: null
+    as_of: "2026-11-18"
+    confidence: assumed
+    note: "Yearly staff, space and maintenance as a fraction of purchase price."
+  utilization:
+    value: 0.5
+    unit: fraction
+    source_url: null
+    as_of: "2026-11-18"
+    confidence: assumed
+  price_per_million_tokens:
+    value: 0.6
+    unit: USD
+    source_url: null
+    as_of: "2026-11-18"
+    confidence: assumed

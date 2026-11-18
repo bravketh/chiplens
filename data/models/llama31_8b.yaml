@@ -1,0 +1,10 @@
+# Llama 3.1 8B. Only the nominal size is stored, so KV cache cannot be modeled.
+name: Llama 3.1 8B
+specs:
+  params_billion:
+    value: 8.0
+    unit: billion
+    source_url: https://arxiv.org/abs/2407.21783
+    as_of: "2026-11-18"
+    confidence: estimated
+    note: "Nominal size from the model name. The exact count was not read."

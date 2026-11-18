@@ -1,0 +1,50 @@
+# Llama 3 70B. Dimensions are the same for the Llama 3.1 70B used in the SN40L paper.
+# Sources: Hugging Face config.json (NousResearch mirror of Meta-Llama-3-70B)
+# and Table 3 of the Llama 3 paper, https://arxiv.org/abs/2407.21783
+
+name: Llama 3 70B
+specs:
+  layers:
+    value: 80
+    unit: count
+    source_url: https://huggingface.co/NousResearch/Meta-Llama-3-70B/raw/main/config.json
+    as_of: "2026-11-18"
+    confidence: published
+  hidden_size:
+    value: 8192
+    unit: count
+    source_url: https://huggingface.co/NousResearch/Meta-Llama-3-70B/raw/main/config.json
+    as_of: "2026-11-18"
+    confidence: published
+  attention_heads:
+    value: 64
+    unit: count
+    source_url: https://huggingface.co/NousResearch/Meta-Llama-3-70B/raw/main/config.json
+    as_of: "2026-11-18"
+    confidence: published
+  kv_heads:
+    value: 8
+    unit: count
+    source_url: https://huggingface.co/NousResearch/Meta-Llama-3-70B/raw/main/config.json
+    as_of: "2026-11-18"
+    confidence: published
+  ffn_size:
+    value: 28672
+    unit: count
+    source_url: https://huggingface.co/NousResearch/Meta-Llama-3-70B/raw/main/config.json
+    as_of: "2026-11-18"
+    confidence: published
+  vocab_size:
+    value: 128256
+    unit: count
+    source_url: https://huggingface.co/NousResearch/Meta-Llama-3-70B/raw/main/config.json
+    as_of: "2026-11-18"
+    confidence: published
+    note: "The paper says 128K (128,000). The config says 128256."
+  params_billion:
+    value: 70.552387584
+    unit: billion
+    source_url: https://huggingface.co/NousResearch/Meta-Llama-3-70B/raw/main/config.json
+    as_of: "2026-11-18"
+    confidence: estimated
+    note: "Derived with chiplens.llm.params_from_architecture, untied embeddings, no norm weights. No source states the total."

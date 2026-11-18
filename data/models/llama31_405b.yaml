@@ -1,0 +1,10 @@
+# Llama 3.1 405B. Only the parameter count is stored, so KV cache cannot be modeled.
+name: Llama 3.1 405B
+specs:
+  params_billion:
+    value: 405.0
+    unit: billion
+    source_url: https://arxiv.org/abs/2407.21783
+    as_of: "2026-11-18"
+    confidence: published
+    note: "Abstract: a dense Transformer with 405B parameters."

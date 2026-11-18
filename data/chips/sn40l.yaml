@@ -1,0 +1,75 @@
+# SambaNova SN40L RDU, one socket.
+# Primary source: Prabhakar et al., "SambaNova SN40L: Scaling the AI Memory Wall
+# with Dataflow and Composition of Experts", MICRO 2024.
+# https://arxiv.org/abs/2405.07518 (HTML v2, Table II and Sections III-IV)
+# as_of is the date these numbers were read.
+#
+# Deliberately absent: SRAM bandwidth (the paper only says "hundreds of TBps"),
+# transistor count and die size (the paper gives "<< 650 mm2"), and power.
+# board_power is a placeholder and is tagged assumed.
+
+name: SambaNova SN40L (one socket)
+specs:
+  peak_compute_bf16:
+    value: 638.0
+    unit: TFLOPS
+    source_url: https://arxiv.org/abs/2405.07518
+    as_of: "2026-11-18"
+    confidence: published
+    note: "Table II, 638 BF16 TFLOPS peak per socket."
+  sram_capacity:
+    value: 520.0
+    unit: MB
+    source_url: https://arxiv.org/abs/2405.07518
+    as_of: "2026-11-18"
+    confidence: published
+    note: "Table II. The paper text says 520 MiB in one place. Not used as a weight tier."
+  hbm_capacity:
+    value: 64.0
+    unit: GB
+    source_url: https://arxiv.org/abs/2405.07518
+    as_of: "2026-11-18"
+    confidence: published
+    note: "Table II says 64 GB, the text says 64 GiB."
+  hbm_bandwidth:
+    value: 1.8
+    unit: TB/s
+    source_url: https://arxiv.org/abs/2405.07518
+    as_of: "2026-11-18"
+    confidence: published
+    note: "Table II says 1.8 TB/s. Section IV says about 2 TB/s. We use the table."
+  ddr_capacity:
+    value: 1500.0
+    unit: GB
+    source_url: https://arxiv.org/abs/2405.07518
+    as_of: "2026-11-18"
+    confidence: published
+    note: "Table II says 1.5 TB per socket."
+  ddr_bandwidth:
+    value: 200.0
+    unit: GB/s
+    source_url: https://arxiv.org/abs/2405.07518
+    as_of: "2026-11-18"
+    confidence: published
+    note: "Table II says 200 GB/s."
+  sockets_per_node:
+    value: 8
+    unit: count
+    source_url: https://arxiv.org/abs/2405.07518
+    as_of: "2026-11-18"
+    confidence: published
+    note: "A single SN40L node has eight sockets."
+  dies_per_socket:
+    value: 2
+    unit: count
+    source_url: https://arxiv.org/abs/2405.07518
+    as_of: "2026-11-18"
+    confidence: published
+    note: "Table II, dual-die socket packaged with CoWoS, TSMC 5nm."
+  board_power:
+    value: 600.0
+    unit: W
+    source_url: null
+    as_of: "2026-11-18"
+    confidence: assumed
+    note: "PLACEHOLDER. The paper gives no power figure. Replace when a source exists."
