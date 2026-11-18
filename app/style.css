@@ -1,0 +1,29 @@
+/* Colors use translucent greys so the page works in light and dark themes. */
+.block-container { padding-top: 2.2rem; max-width: 1200px; }
+
+.hero h1 { margin: 0; font-size: 2.1rem; letter-spacing: -0.02em; }
+.hero p  { margin: .2rem 0 1rem; opacity: .75; font-size: 1.05rem; }
+
+.verdict {
+  padding: 1.1rem 1.4rem; border-radius: 14px; margin: .4rem 0 1rem;
+  border: 1px solid rgba(128,128,128,.25);
+  border-left: 8px solid var(--c);
+  background: rgba(128,128,128,.07);
+}
+.verdict .tag { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--c); font-weight: 700; }
+.verdict h2 { margin: .15rem 0 .35rem; font-size: 1.55rem; line-height: 1.25; }
+.verdict p  { margin: .2rem 0; opacity: .9; }
+.verdict .levers { margin-top: .6rem; }
+.verdict .levers b { font-size: .85rem; opacity: .8; margin-right: .3rem; }
+.verdict .levers span {
+  display: inline-block; padding: .12rem .65rem; margin: .2rem .3rem .2rem 0;
+  border-radius: 999px; border: 1px solid rgba(128,128,128,.45); font-size: .85rem;
+}
+.regime-memory   { --c: #e8833a; }
+.regime-compute  { --c: #3b82f6; }
+.regime-capacity { --c: #e5484d; }
+
+.note { font-size: .88rem; opacity: .75; }
+.pick { padding: .7rem 1rem; border-radius: 10px; margin: .4rem 0;
+  border: 1px solid rgba(128,128,128,.3); background: rgba(232,131,58,.10); }

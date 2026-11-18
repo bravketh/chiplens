@@ -96,3 +96,21 @@ def audit_total_claim(
         "Lower precision or sparsity doubling peak? Fewer active parameters "
         "(mixture of experts)? Speculative decoding counting accepted tokens?",
     )
+
+
+def calibration_factor(measured: float, predicted: float) -> float:
+    """How much of the model's prediction a real measurement reached.
+
+    factor = measured / predicted
+
+    Below 1 means the real system is slower than the ideal model (overheads,
+    below-peak bandwidth). Above 1 means the model's bound was beaten, so an
+    assumption is broken, usually one token per weight read (speculative
+    decoding). Use it as ``efficiency`` when it is at most 1.
+
+    Args:
+        measured: A measured speed, in tokens/s.
+        predicted: The model's prediction for the same setup, in tokens/s.
+    """
+    _require_positive(measured=measured, predicted=predicted)
+    return measured / predicted

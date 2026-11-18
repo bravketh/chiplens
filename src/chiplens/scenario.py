@@ -15,6 +15,7 @@ Modeling choices (see docs/methodology.md):
 
 from __future__ import annotations
 
+import copy
 from dataclasses import dataclass
 from typing import Any
 
@@ -46,6 +47,20 @@ class Result:
     assumed_inputs: list[str]
     estimated_inputs: list[str]
     worst_confidence: str
+    # Fields below feed the UI: the bottleneck, roofline and capacity pictures.
+    batch: int
+    capacity_gb: float  # total memory across tiers and sockets
+    kv_total_gb: float  # batch * KV per user
+    peak_tflops: float  # across all sockets
+    effective_bandwidth_tb_s: float  # weights / step time, falls when weights spill
+    fastest_bandwidth_tb_s: float  # bandwidth of the fastest tier, all sockets
+    achieved_tflops: float  # peak * utilization
+    memory_step_s: float  # seconds per step if memory were the only limit
+    compute_step_s: float  # seconds per step if compute were the only limit
+    bound: str  # "memory" or "compute"
+    batch1_bound_tokens_per_s: float  # 1 / (time to stream the weights once)
+    tokens_per_read: float  # speculative decoding: tokens per weight read
+    efficiency: float  # fraction of the ideal speed actually reached
 
 
 def chip_tiers(chip: dict[str, Any], sockets: int, used: dict[str, str]) -> list[Tier]:
@@ -90,6 +105,8 @@ def analyze(
     sockets: int = 1,
     batch: int = 1,
     context_tokens: int = 0,
+    tokens_per_read: float = 1.0,
+    efficiency: float = 1.0,
 ) -> Result:
     """Run one scenario.
 
@@ -101,6 +118,12 @@ def analyze(
         sockets: Chips working together (ideal scaling).
         batch: Concurrent users.
         context_tokens: Tokens of context per user (0 ignores the KV cache).
+        tokens_per_read: Tokens produced per read of the weights. 1 is plain
+            decoding. Above 1 models speculative decoding in its ideal form: the
+            memory-limited speed scales up, the compute limit does not, and the
+            extra compute spent on rejected draft tokens is ignored.
+        efficiency: Fraction of the ideal speed a real system reaches (0 to 1).
+            Use ``audit.calibration_factor`` to derive it from a measurement.
 
     Returns:
         A Result with speeds, limits, power and the confidence of every input.
@@ -113,6 +136,10 @@ def analyze(
         raise ValueError(f"precision must be one of {sorted(PRECISION_BYTES)}")
     if sockets < 1 or batch < 1 or context_tokens < 0:
         raise ValueError("sockets and batch must be >= 1 and context_tokens >= 0")
+    if tokens_per_read < 1.0:
+        raise ValueError(f"tokens_per_read must be >= 1, got {tokens_per_read}")
+    if not 0.0 < efficiency <= 1.0:
+        raise ValueError(f"efficiency must be in (0, 1], got {efficiency}")
 
     used: dict[str, str] = {}
     bytes_per = PRECISION_BYTES[precision]
@@ -156,8 +183,10 @@ def analyze(
 
     t_cmp = compute_limit_tokens_per_s(peak, params)
     memory_time = step + batch * kv_gb / (1000.0 * fastest_bw)
-    per_user = min(1.0 / memory_time, t_cmp / batch)
+    compute_time = batch / t_cmp
+    per_user = efficiency * min(tokens_per_read / memory_time, 1.0 / compute_time)
     system = batch * per_user
+    utilization = min(1.0, system * 2.0 * params / (1000.0 * peak))
 
     power = spec_value(chip, "board_power", "W") * sockets
     used["board_power"] = spec_confidence(chip, "board_power")
@@ -172,7 +201,7 @@ def analyze(
         per_user_tokens_per_s=per_user,
         system_tokens_per_s=system,
         balanced_batch=t_cmp * step,
-        compute_utilization=min(1.0, system * 2.0 * params / (1000.0 * peak)),
+        compute_utilization=utilization,
         kv_gb_per_user=kv_gb,
         kv_fits=(w + batch * kv_gb) <= total_capacity,
         max_batch_by_capacity=(
@@ -184,4 +213,62 @@ def analyze(
         assumed_inputs=assumed,
         estimated_inputs=estimated,
         worst_confidence=worst,
+        batch=batch,
+        capacity_gb=total_capacity,
+        kv_total_gb=batch * kv_gb,
+        peak_tflops=peak,
+        effective_bandwidth_tb_s=w / (1000.0 * step),
+        fastest_bandwidth_tb_s=fastest_bw,
+        achieved_tflops=peak * utilization,
+        memory_step_s=memory_time,
+        compute_step_s=compute_time,
+        bound="memory" if memory_time / tokens_per_read >= compute_time else "compute",
+        batch1_bound_tokens_per_s=1.0 / step,
+        tokens_per_read=tokens_per_read,
+        efficiency=efficiency,
     )
+
+
+def with_multipliers(
+    chip: dict[str, Any],
+    bandwidth: float = 1.0,
+    compute: float = 1.0,
+    capacity: float = 1.0,
+) -> dict[str, Any]:
+    """A what-if copy of a chip with bandwidth, compute and/or capacity scaled.
+
+    Every ``*_bandwidth`` spec is multiplied by ``bandwidth``, every
+    ``peak_compute_*`` spec by ``compute`` and every ``*_capacity`` spec by
+    ``capacity``. A scaled spec is no longer a sourced
+    number, so it is relabelled ``assumed`` and the chip's name says what-if. The
+    original chip is never changed.
+
+    Args:
+        chip: Loaded chip data.
+        bandwidth: Factor for all memory bandwidths (2.0 doubles them).
+        compute: Factor for all peak compute figures.
+        capacity: Factor for all memory capacities.
+
+    Raises:
+        ValueError: If a factor is not positive.
+    """
+    if bandwidth <= 0 or compute <= 0 or capacity <= 0:
+        raise ValueError("multipliers must be positive")
+    out = copy.deepcopy(chip)
+    changed = False
+    for key, field in out["specs"].items():
+        factor = 1.0
+        if key.endswith("_bandwidth"):
+            factor = bandwidth
+        elif key.startswith("peak_compute_"):
+            factor = compute
+        elif key.endswith("_capacity"):
+            factor = capacity
+        if factor != 1.0:
+            field["value"] = field["value"] * factor
+            field["confidence"] = "assumed"
+            field["note"] = f"WHAT-IF: sourced value multiplied by {factor:g}."
+            changed = True
+    if changed:
+        out["name"] = f"{chip['name']} (what-if)"
+    return out
