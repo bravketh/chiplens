@@ -116,6 +116,36 @@ def tokens_per_s_per_user(
     )
 
 
+def tokens_per_s_per_user_with_kv(
+    batch: float,
+    bandwidth_tb_s: float,
+    peak_tflops: float,
+    params_billion: float,
+    bytes_per_param: float,
+    kv_gb_per_user: float,
+) -> float:
+    """Per-user speed when every user also has a KV cache to read each step.
+
+    t(B) = min( 1000 * BW / (W + B * kv),  T_cmp / B )
+
+    The extra B * kv term is why long contexts and big batches become memory
+    bound again even above the balanced batch of the no-cache model.
+
+    Args:
+        kv_gb_per_user: KV cache size per user in GB (0 reproduces the plain model).
+
+    Returns:
+        Tokens per second for one user.
+    """
+    _require_positive(batch=batch)
+    if kv_gb_per_user < 0:
+        raise ValueError(f"kv_gb_per_user must be >= 0, got {kv_gb_per_user}")
+    w = weights_gb(params_billion, bytes_per_param)
+    memory = 1000.0 * bandwidth_tb_s / (w + batch * kv_gb_per_user)
+    compute = compute_limit_tokens_per_s(peak_tflops, params_billion) / batch
+    return min(memory, compute)
+
+
 def system_throughput(
     batch: float,
     bandwidth_tb_s: float,
